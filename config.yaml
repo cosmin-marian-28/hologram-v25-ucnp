@@ -1,0 +1,99 @@
+# ═══════════════════════════════════════════════════════════════════
+# V25 UCNP Upconversion Hologram — Hardware Configuration
+# ═══════════════════════════════════════════════════════════════════
+# CLAMSHELL DESIGN: Top + Bottom arrays for proper 3D acoustic trapping.
+# All dimensions in meters. All angles in degrees.
+# Run calibration.py after changing geometry.
+
+display:
+  radius_m: 0.06               # Display volume radius (6cm sphere)
+  center_height_m: 0.0         # Display center at midpoint between arrays
+  max_voxels_per_frame: 1000   # Ultrasound node limit
+  target_fps: 30
+
+# ── Clamshell frame ──
+# Two curved bowls (top + bottom) connected by 3 support pillars.
+# Open equatorial gap for viewing. Like v23 but ultrasonic, not RF.
+frame:
+  bowl_sphere_radius_m: 0.11   # Radius of the sphere the bowls are cut from
+  bowl_cap_angle_deg: 50       # Each bowl covers 50° of the sphere
+  pillar_count: 3              # Support pillars at 120° spacing
+  pillar_radius_m: 0.004
+  material: "anodized aluminum"
+
+# ── Ultrasonic arrays — TOP + BOTTOM bowls ──
+# Opposing arrays create standing waves with stable 3D pressure nodes.
+# Particles trap at nodes (pressure minima) in all three axes.
+ultrasound_array:
+  frequency_khz: 40
+  transducers_per_bowl: 128    # 128 bottom + 128 top = 256 total
+  rings_per_bowl: 5
+  base_per_ring: 10
+  max_pressure_pa: 3000        # At focal node
+  node_size_um: 200            # Acoustic trap diameter
+  max_power_w: 10.0            # Per bowl
+  default_power_w: 5.0
+  phase_resolution_bits: 8     # 256 phase steps per transducer
+  update_rate_khz: 40          # Phase pattern refresh rate
+  # Standing wave creates nodes at λ/2 spacing = 4.3mm at 40kHz
+  # Opposing arrays lock nodes in all 3 axes (single-sided only locks 1 axis)
+  trapping_stiffness_pn_per_um: 0.5  # Piconewtons per micron displacement
+
+# ── VCSEL arrays — split between top + bottom bowl rims ──
+vcsel_array:
+  count_bottom: 4              # 4 on bottom bowl rim
+  count_top: 4                 # 4 on top bowl rim (offset 45°)
+  total: 8
+  wavelength_nm: 980           # IR — Yb³⁺ absorption band
+  tilt_inward_deg: 35.0        # From bowl surface normal, aimed at center
+  pulse_duration_ns: 100
+  series_gap_ns: 25
+  series_total_us: 1.0
+  max_pulse_energy_uj: 25
+  default_pulse_energy_uj: 12
+  repetition_rate_khz: 30
+  galvo_settling_us: 5.0
+
+# ── UCNP reservoir (inside bottom bowl) ──
+ucnp_reservoir:
+  volume_ml: 1.0
+  concentration_wv_pct: 0.01
+  particle_diameter_nm: 30
+  particle_density_kg_m3: 4200  # NaYF4 crystal density
+  composition:
+    green_er_pct: 60            # NaYF4:Yb,Er → green 540nm + red 660nm
+    blue_tm_pct: 25             # NaYF4:Yb,Tm → blue 475nm
+    yellow_ho_pct: 15           # NaYF4:Yb,Ho → yellow-green 545nm
+  nebulizer:
+    type: "piezo_mesh"
+    droplet_diameter_um: 3.0
+    flow_rate_ul_per_min: 0.5
+    # Mounted inside bottom bowl, nozzle points upward through center hole
+    position: "bottom_bowl_center"
+  loss_rate_per_hour: 0.001
+
+# ── RGB laser (mounted at bottom bowl center, fires upward) ──
+rgb_laser:
+  wavelengths_nm: [638, 520, 450]
+  max_power_mw: [200, 150, 100]
+  galvo_speed_kpps: 30
+  position: "bottom_bowl_center"
+
+# ── Haptics (time-multiplexed on the same ultrasound arrays) ──
+haptics:
+  enabled: true
+  method: "ultrasonic_mid_air"
+  focal_spot_mm: 8.0
+  max_force_mn: 1.6
+  modulation_hz: 200
+  hand_tracking: "ultrasound_echo"
+  image_reform_ms: 5.0
+  # Haptic frames interleaved with trapping frames at 40kHz
+  # 50% duty cycle: 20kHz trapping + 20kHz haptics
+  duty_cycle_pct: 50
+
+fpga:
+  model: "Xilinx Artix-7 XC7A100T"
+  clock_mhz: 200
+  vcsel_timing_resolution_ns: 1
+  us_phase_channels: 256        # 128 bottom + 128 top
