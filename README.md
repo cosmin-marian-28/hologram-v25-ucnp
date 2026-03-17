@@ -30,7 +30,7 @@
 ## 1. Executive Summary
 
 This project demonstrates a volumetric display concept that creates
-**touchable 3D images floating in open air** using three key technologies:
+**3D objects floating in open air** using three key technologies:
 
 - **Upconversion nanoparticles (UCNPs)** that convert invisible infrared
   light into visible light
@@ -44,18 +44,18 @@ points in 3D space. You can walk around it. You can put your hand through
 it. The image reforms around your fingers.
 
 ```
-                    ┌─────────────────────────────────────┐
+                    ┌──────────────────────────────────────┐
                     │  WHAT MAKES THIS DIFFERENT           │
-                    ├─────────────────────────────────────┤
+                    ├──────────────────────────────────────┤
                     │  ✓ True 3D — not a 2D projection     │
-                    │  ✓ Touchable — haptic feedback        │
-                    │  ✓ Daylight helps — ambient IR boost  │
-                    │  ✓ Non-toxic — UCNPs wash off          │
-                    │  ✓ No screen — open air display        │
-                    │  ✗ Low resolution (~28³ voxels)        │
-                    │  ✗ Indoor only (not direct sunlight)   │
-                    │  ✗ ~45% sRGB color gamut               │
-                    └─────────────────────────────────────┘
+                    │  ✓ Touchable — haptic feedback       │
+                    │  ✓ Daylight helps — ambient IR boost │
+                    │  ✓ Non-toxic — UCNPs wash off        │
+                    │  ✓ No screen — open air display      │
+                    │  ✗ Low resolution (~28³ voxels)      │
+                    │  ✗ Indoor only (not direct sunlight) │
+                    │  ✗ ~45% sRGB color gamut             │
+                    └──────────────────────────────────────┘
 ```
 
 ---
@@ -64,41 +64,41 @@ it. The image reforms around your fingers.
 
 ```
   ╔═══════════════════════════════════════════════════════════════════╗
-  ║                    SYSTEM BLOCK DIAGRAM                          ║
+  ║                    SYSTEM BLOCK DIAGRAM                           ║
   ╠═══════════════════════════════════════════════════════════════════╣
   ║                                                                   ║
-  ║   ┌──────────┐    ┌──────────┐    ┌──────────────────────────┐   ║
-  ║   │ 3D Model │───▶│  Voxel   │───▶│  Acoustic Lattice Grid   │   ║
-  ║   │ STL/OBJ  │    │  Engine  │    │  (λ/2 = 4.29mm pitch)   │   ║
-  ║   └──────────┘    └──────────┘    └────────────┬─────────────┘   ║
-  ║                                                 │                  ║
-  ║                                                 ▼                  ║
+  ║   ┌──────────┐    ┌──────────┐    ┌──────────────────────────┐    ║
+  ║   │ 3D Model │───▶│  Voxel   │───▶│  Acoustic Lattice Grid   │    ║
+  ║   │ STL/OBJ  │    │  Engine  │    │  (λ/2 = 4.29mm pitch)    │    ║
+  ║   └──────────┘    └──────────┘    └────────────┬─────────────┘    ║
+  ║                                                 │                 ║
+  ║                                                 ▼                 ║
   ║   ┌──────────────────────────────────────────────────────────┐    ║
-  ║   │                    FPGA CONTROLLER                        │    ║
-  ║   │              (Xilinx Artix-7, 200MHz)                     │    ║
-  ║   │                                                            │    ║
-  ║   │   ┌─────────┐  ┌──────────┐  ┌─────┐  ┌──────────────┐  │    ║
+  ║   │                    FPGA CONTROLLER                       │    ║
+  ║   │              (Xilinx Artix-7, 200MHz)                    │    ║
+  ║   │                                                          │    ║
+  ║   │   ┌─────────┐   ┌──────────┐  ┌─────┐  ┌──────────────┐  │    ║
   ║   │   │Ultrasound│  │  VCSEL   │  │ RGB │  │   Haptics    │  │    ║
   ║   │   │  Phase   │  │  Series  │  │Laser│  │  Interleave  │  │    ║
   ║   │   │ Control  │  │  Timing  │  │Sync │  │   Control    │  │    ║
   ║   │   └────┬─────┘  └────┬─────┘  └──┬──┘  └──────┬───────┘  │    ║
-  ║   └────────┼──────────────┼───────────┼────────────┼──────────┘    ║
-  ║            │              │           │            │               ║
-  ║            ▼              ▼           ▼            ▼               ║
-  ║   ┌──────────────┐ ┌──────────┐ ┌────────┐ ┌────────────────┐    ║
-  ║   │ 256 Ultrasonic│ │ 8 VCSELs │ │RGB Laser│ │ Same US Array  │    ║
-  ║   │ Transducers   │ │ (980nm)  │ │(R/G/B) │ │ (haptic mode) │    ║
-  ║   │ (128+128)     │ │ (4+4)    │ │        │ │               │    ║
-  ║   └──────┬────────┘ └────┬─────┘ └───┬────┘ └───────┬───────┘    ║
-  ║          │               │            │              │             ║
-  ║          ▼               ▼            ▼              ▼             ║
+  ║   └────────┼──────────────┼───────────┼────────────┼─────────┘    ║
+  ║            │              │           │            │              ║
+  ║            ▼              ▼           ▼            ▼              ║
+  ║   ┌───────────────┐ ┌──────────┐ ┌─────────┐ ┌───────────────┐    ║
+  ║   │ 256 Ultrasonic│ │ 8 VCSELs │ │RGB Laser│ │ Same US Array │    ║
+  ║   │ Transducers   │ │ (980nm)  │ │(R/G/B)  │ │ (haptic mode) │    ║
+  ║   │ (128+128)     │ │ (4+4)    │ │         │ │               │    ║
+  ║   └──────┬────────┘ └────┬─────┘ └───┬─────┘ └───────┬───────┘    ║
+  ║          │               │            │              │            ║
+  ║          ▼               ▼            ▼              ▼            ║
   ║   ┌──────────────────────────────────────────────────────────┐    ║
-  ║   │              DISPLAY VOLUME (6cm radius sphere)           │    ║
-  ║   │                                                            │    ║
-  ║   │    Ultrasound traps UCNP clouds at pressure nodes         │    ║
-  ║   │    VCSELs excite UCNPs → visible upconversion emission    │    ║
-  ║   │    RGB laser tunes perceived color per voxel              │    ║
-  ║   │    Haptic pressure waves give touch sensation             │    ║
+  ║   │              DISPLAY VOLUME (6cm radius sphere)          │    ║
+  ║   │                                                          │    ║
+  ║   │    Ultrasound traps UCNP clouds at pressure nodes        │    ║
+  ║   │    VCSELs excite UCNPs → visible upconversion emission   │    ║
+  ║   │    RGB laser tunes perceived color per voxel             │    ║
+  ║   │    Haptic pressure waves give touch sensation            │    ║
   ║   └──────────────────────────────────────────────────────────┘    ║
   ║                         ▲                                         ║
   ║                         │                                         ║
@@ -131,21 +131,21 @@ glow by infrared lasers.
   THE THREE-STEP PROCESS:
 
   STEP 1: TRAP                STEP 2: EXCITE              STEP 3: EMIT
-  ┌─────────────────┐        ┌─────────────────┐        ┌─────────────────┐
-  │                  │        │                  │        │                  │
-  │  Ultrasound      │        │  980nm IR laser   │        │  540nm GREEN     │
-  │  standing wave   │        │  series hits the  │        │  light emitted   │
-  │  creates pressure│        │  trapped UCNP     │        │  from Er³⁺ ions  │
-  │  node (minimum)  │        │  cloud 8 times    │        │  (upconversion)  │
-  │                  │        │  in 1 microsecond │        │                  │
-  │   ┌──┐          │        │                  │        │     * * *        │
-  │   │  │ ← UCNPs  │        │  ≋≋≋≋≋≋≋≋≋≋≋≋≋  │        │    * ✦ *  ← glow │
-  │   │  │  trapped  │        │  IR IR IR IR IR  │        │     * * *        │
-  │   └──┘  here    │        │  ≋≋≋≋≋≋≋≋≋≋≋≋≋  │        │                  │
-  │                  │        │                  │        │  Visible to      │
-  │  Force: ~0.5pN/μm│        │  Energy stacks   │        │  human eye       │
-  └─────────────────┘        │  in Yb³⁺ state   │        └─────────────────┘
-                              └─────────────────┘
+  ┌──────────────────┐        ┌───────────────────┐       ┌──────────────────┐
+  │                  │        │                   │       │                  │
+  │  Ultrasound      │        │  980nm IR laser   │       │  540nm GREEN     │
+  │  standing wave   │        │  series hits the  │       │  light emitted   │
+  │  creates pressure│        │  trapped UCNP     │       │  from Er³⁺ ions  │
+  │  node (minimum)  │        │  cloud 8 times    │       │  (upconversion)  │
+  │                  │        │  in 1 microsecond │       │                  │
+  │   ┌──┐           │        │                   │       │     * * *        │
+  │   │  │ ← UCNPs   │        │  ≋≋≋≋≋≋≋≋≋≋≋≋≋    │       │    * ✦ *  ← glow │
+  │   │  │  trapped  │        │  IR IR IR IR IR   │       │     * * *        │
+  │   └──┘  here     │        │  ≋≋≋≋≋≋≋≋≋≋≋≋≋    │       │                  │
+  │                  │        │                   │       │  Visible to      │
+  │  Force: ~0.5pN/μm│        │  Energy stacks    │       │  human eye       │
+  └──────────────────┘        │  in Yb³⁺ state    │       └──────────────────┘
+                              └───────────────────┘
 ```
 
 ### Upconversion: Turning Invisible Light Visible
@@ -198,29 +198,29 @@ ONE higher-energy visible photon. This is real physics, not magic.
             ═════●  │  Transducers  │  ●═════  ← Pillar (×3)
                  │  │  (128 top)    │    │
                  │   ╲             ╱     │
-                  ╲    T2      T1      ╱
-                   ╲                  ╱
+                  ╲    T2      T1       ╱
+                   ╲                   ╱
                     ╰─────────────────╯
 
                         SIDE VIEW (cross-section)
 
-              ╭──────────────────────────────╮
-             ╱  ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪  ╲   ← 128 transducers
-            ╱    ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪     ╲     on curved bowl
-           │      ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪        │
-      [T0]◄│        ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪          │►[T2]  ← VCSELs on rim
+              ╭───────────────────────────────╮
+             ╱  ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪      ╲   ← 128 transducers
+            ╱    ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪         ╲     on curved bowl
+           │      ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪           │
+      [T0]◄│        ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪             │►[T2]  ← VCSELs on rim
            │                                      │
      ══════╪══  ← Pillar    DISPLAY     Pillar →══╪══════
-           │                VOLUME                 │
-           │              (6cm sphere)             │
+           │                VOLUME                │
+           │              (6cm sphere)            │
            │           ┌─ ─ ─ ─ ─ ─┐              │
       [B0]◄│           │  ★ ★ ★ ★  │              │►[B2]  ← VCSELs on rim
            │           │  ★ ★ ★ ★  │ ← Hologram   │
            │           │  ★ ★ ★ ★  │              │
            │           └─ ─ ─ ─ ─ ─┘              │
-            ╲        ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪          ╱
-             ╲     ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪      ╱
-              ╲  ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪  ╱   ← 128 transducers
+            ╲        ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪           ╱
+             ╲     ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪        ╱
+              ╲  ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪ ▪     ╱   ← 128 transducers
                ╰──────────┬───────────────────╯
                       [RGB] [NEB]
                        ↑      ↑
@@ -236,16 +236,16 @@ ONE higher-energy visible photon. This is real physics, not magic.
 
 ```
   SINGLE-SIDED (bottom only)          DUAL OPPOSING (clamshell)
-  ┌─────────────────────────┐        ┌─────────────────────────┐
-  │                          │        │  ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼  │ ← Top array
-  │     Particle drifts      │        │                          │    pushes DOWN
-  │     sideways — no        │        │     Particle locked      │
-  │     lateral trapping     │        │     in ALL 3 AXES        │
-  │          ○ → ?           │        │          ●               │
-  │                          │        │     (stable node)        │
-  │  ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲   │        │                          │
-  │  Bottom array pushes UP  │        │  ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲  │ ← Bottom array
-  └─────────────────────────┘        └─────────────────────────┘    pushes UP
+  ┌──────────────────────────┐       ┌─────────────────────────┐
+  │                          │       │  ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼    │ ← Top array
+  │     Particle drifts      │       │                         │    pushes DOWN
+  │     sideways — no        │       │     Particle locked     │
+  │     lateral trapping     │       │     in ALL 3 AXES       │
+  │          ○ → ?           │       │          ●              │
+  │                          │       │     (stable node)       │
+  │  ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲     │       │                         │
+  │  Bottom array pushes UP  │       │  ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲ ▲    │ ← Bottom array
+  └──────────────────────────┘       └─────────────────────────┘    pushes UP
   
   Result: vertical trapping only     Result: 3D stable trapping
   Particles escape sideways          Standing wave locks X, Y, Z
@@ -255,9 +255,9 @@ ONE higher-energy visible photon. This is real physics, not magic.
 ### Bill of Materials
 
 ```
-  ┌────┬──────────────────────────────────┬──────────┬───────────┐
+  ┌────┬───────────────────────────────────┬───────────┬───────────┐
   │ Qty│ Component                         │ Spec      │ Est. Cost │
-  ├────┼──────────────────────────────────┼──────────┼───────────┤
+  ├────┼───────────────────────────────────┼───────────┼───────────┤
   │ 256│ Ultrasonic transducers            │ 40kHz     │ $150      │
   │   8│ VCSEL modules                     │ 980nm IR  │ $200      │
   │   1│ RGB laser module                  │ R/G/B     │ $80       │
@@ -267,9 +267,9 @@ ONE higher-energy visible photon. This is real physics, not magic.
   │   2│ Aluminum bowl shells              │ 16cm dia  │ $60       │
   │   3│ Support pillars                   │ Aluminum  │ $15       │
   │   1│ Power supply                      │ 12V/5A    │ $20       │
-  ├────┼──────────────────────────────────┼──────────┼───────────┤
-  │    │ TOTAL (estimated prototype)       │          │ ~$750     │
-  └────┴──────────────────────────────────┴──────────┴───────────┘
+  ├────┼───────────────────────────────────┼───────────┼───────────┤
+  │    │ TOTAL (estimated prototype)       │           │ ~$750     │
+  └────┴───────────────────────────────────┴───────────┴───────────┘
 ```
 
 ---
@@ -280,29 +280,29 @@ This is the complete pipeline from a file on disk to photons leaving
 a floating particle cloud.
 
 ```
-  ┌─────────────┐
+  ┌──────────────┐
   │  model.obj   │  ← Any 3D mesh (STL, OBJ, PLY, GLTF)
   └──────┬───────┘
          │
          ▼
   ┌──────────────────────────────────────────────────────────────┐
-  │  VOXEL ENGINE (voxel_engine.py)                               │
-  │                                                                │
-  │  1. Load mesh via trimesh                                      │
-  │  2. Center + normalize to fit 6cm display sphere               │
-  │  3. Auto-orient (Z-up → Y-up if needed)                       │
-  │  4. Sample 500k surface points                                 │
-  │  5. Extract texture colors (UV mapping + barycentric interp)   │
-  │  6. Snap to acoustic lattice grid (λ/2 = 4.29mm)              │
-  │  7. Merge duplicate grid cells, average colors                 │
-  │  8. Downsample to ≤1000 voxels (ultrasound node limit)        │
-  │                                                                │
-  │  Output: positions[N,3] + colors[N,3] on λ/2 grid             │
+  │  VOXEL ENGINE (voxel_engine.py)                              │
+  │                                                              │
+  │  1. Load mesh via trimesh                                    │
+  │  2. Center + normalize to fit 6cm display sphere             │
+  │  3. Auto-orient (Z-up → Y-up if needed)                      │
+  │  4. Sample 500k surface points                               │
+  │  5. Extract texture colors (UV mapping + barycentric interp) │
+  │  6. Snap to acoustic lattice grid (λ/2 = 4.29mm)             │
+  │  7. Merge duplicate grid cells, average colors               │
+  │  8. Downsample to ≤1000 voxels (ultrasound node limit)       │
+  │                                                              │
+  │  Output: positions[N,3] + colors[N,3] on λ/2 grid            │
   └──────────────────────────┬───────────────────────────────────┘
                               │
          ┌────────────────────┼────────────────────┐
          ▼                    ▼                     ▼
-  ┌──────────────┐   ┌───────────────┐   ┌──────────────────┐
+  ┌───────────────┐   ┌───────────────┐   ┌──────────────────┐
   │  ULTRASOUND   │   │    VCSEL      │   │   RGB LASER      │
   │  CONTROLLER   │   │  CONTROLLER   │   │  CONTROLLER      │
   │               │   │               │   │                  │
@@ -310,7 +310,7 @@ a floating particle cloud.
   │ pattern for   │   │ in sequence:  │   │                  │
   │ ALL voxels    │   │               │   │ 1. Read texture  │
   │ simultaneously│   │ 1. Aim galvos │   │    color         │
-  │               │   │ 2. Wait 5μs   │   │ 2. Set R/G/B    │
+  │               │   │ 2. Wait 5μs   │   │ 2. Set R/G/B     │
   │ Upload 256    │   │    settle     │   │    power ratio   │
   │ phases to     │   │ 3. Fire series│   │ 3. Aim galvo     │
   │ FPGA          │   │    B0→T0→B1→  │   │ 4. Fire pulse    │
@@ -323,16 +323,16 @@ a floating particle cloud.
          │                    │                     │
          ▼                    ▼                     ▼
   ┌──────────────────────────────────────────────────────────────┐
-  │                    AT THE VOXEL POINT                         │
-  │                                                                │
-  │  Sound waves hold 10⁴ UCNPs in a 200μm cloud                  │
-  │  8 IR laser pulses stack energy in Yb³⁺ ions                  │
-  │  Population inversion → Er³⁺ emits 540nm green light          │
-  │  RGB scatter adds color tint                                   │
-  │  Human eye sees: a glowing colored point in mid-air            │
-  │                                                                │
-  │  Repeat for all ~1000 voxels at 30fps                          │
-  │  Persistence of vision → continuous 3D image                   │
+  │                    AT THE VOXEL POINT                        │
+  │                                                              │
+  │  Sound waves hold 10⁴ UCNPs in a 200μm cloud                 │
+  │  8 IR laser pulses stack energy in Yb³⁺ ions                 │
+  │  Population inversion → Er³⁺ emits 540nm green light         │
+  │  RGB scatter adds color tint                                 │
+  │  Human eye sees: a glowing colored point in mid-air          │
+  │                                                              │
+  │  Repeat for all ~1000 voxels at 30fps                        │
+  │  Persistence of vision → continuous 3D image                 │
   └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -354,10 +354,10 @@ a floating particle cloud.
    │            │  │  Each hit adds to population inversion             │
    │            │  │  After 8 hits: VISIBLE EMISSION                    │
    │            │  └────────────────────────────────────────────────────│
-   │                                                                     │
+   │                                                                    │
    │◄──────────────────── Total: ~6.5μs per voxel ─────────────────────▶│
-   │                                                                     │
-   │  At 30fps with 1000 voxels: 6.5ms scan time (fits in 33ms frame)  │
+   │                                                                    │
+   │  At 30fps with 1000 voxels: 6.5ms scan time (fits in 33ms frame)   │
 ```
 
 ---
@@ -416,7 +416,7 @@ upconversion.
           ╲    ╱                          ╲    ╱
            ╲  ╱                            ╲  ╱
             ╳  ← beams cross                ╳
-           ╱  ╲    at voxel               ╱  ╲
+           ╱  ╲    at voxel                ╱  ╲
           ╱    ╲                          ╱    ╲
          ╱      ╲                        ╱      ╲
         ╱        ╲                      ╱        ╲
@@ -442,20 +442,20 @@ display volume.
 ```
   PARTICLE LIFECYCLE
 
-  ┌──────────┐    nebulize     ┌──────────┐    ultrasound    ┌──────────┐
+  ┌───────────┐    nebulize    ┌───────────┐    ultrasound   ┌───────────┐
   │ Reservoir │───────────────▶│  Aerosol  │────────────────▶│  Trapped  │
   │ (liquid   │   3μm droplets │  (air)    │   catches at    │  at node  │
   │ suspension│                │           │   pressure node │  (voxel)  │
-  └──────────┘                └──────────┘                  └─────┬─────┘
+  └───────────┘                └───────────┘                 └────┬──────┘
        ▲                                                          │
        │                         0.1%/hr                          │
        │                         drift loss                       │
        │                              │                           │
        │         settles as           ▼                           │
-       │         harmless      ┌──────────┐    reused             │
+       │         harmless      ┌───────────┐    reused            │
        │         dust          │  Escaped  │◄─────────────────────┘
        │                       │ particles │   (most stay trapped
-       │                       └──────────┘    indefinitely)
+       │                       └───────────┘    indefinitely)
        │
        └── Refill every ~10,000 hours ($0.00005 per refill)
 ```
@@ -526,16 +526,16 @@ acoustic lattice constraints.
 ```
   PIPELINE: model.obj → voxels in air
 
-  ┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
+  ┌───────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
   │  Load     │────▶│ Normalize│────▶│  Sample  │────▶│  Extract │
   │  mesh     │     │ center,  │     │  500k    │     │  texture │
   │  (trimesh)│     │ scale to │     │  surface │     │  colors  │
   │           │     │  6cm     │     │  points  │     │  (UV+    │
   │           │     │  sphere  │     │          │     │  baryc.) │
-  └──────────┘     └──────────┘     └──────────┘     └─────┬────┘
+  └───────────┘     └──────────┘     └──────────┘     └─────┬────┘
                                                             │
-  ┌──────────┐     ┌──────────┐     ┌──────────┐           │
-  │  Output  │◄────│Downsample│◄────│  Snap to │◄──────────┘
+  ┌──────────┐     ┌──────────┐     ┌──────────┐            │
+  │  Output  │◄────│Downsample│◄────│  Snap to │◄───────────┘
   │  N×[x,y,z│     │  to 1000 │     │  λ/2 grid│
   │   r,g,b] │     │  voxels  │     │  (4.29mm)│
   │          │     │  (keep   │     │  merge   │
@@ -544,15 +544,15 @@ acoustic lattice constraints.
 
   RESOLUTION REALITY CHECK:
   ┌─────────────────────────────────────────────────┐
-  │  Display diameter: 12cm                          │
-  │  Lattice pitch: 4.29mm                           │
-  │  Voxels across: ~28                              │
-  │  Total grid positions in sphere: ~2700           │
-  │  Active voxels per frame: ~1000                  │
-  │                                                   │
-  │  Think of it as a 28×28×28 3D pixel display.     │
-  │  Good for: shapes, faces, simple objects          │
-  │  Bad for: text, fine detail, thin features        │
+  │  Display diameter: 12cm                         │
+  │  Lattice pitch: 4.29mm                          │
+  │  Voxels across: ~28                             │
+  │  Total grid positions in sphere: ~2700          │
+  │  Active voxels per frame: ~1000                 │
+  │                                                 │
+  │  Think of it as a 28×28×28 3D pixel display.    │
+  │  Good for: shapes, faces, simple objects        │
+  │  Bad for: text, fine detail, thin features      │
   └─────────────────────────────────────────────────┘
 ```
 
@@ -563,30 +563,30 @@ acoustic lattice constraints.
 ```
   CALIBRATION SEQUENCE
 
-  ┌─────────────────────────────────────────────────────────────┐
+  ┌──────────────────────────────────────────────────────────────┐
   │  STEP 1: Ultrasound Array                                    │
   │  • Enable one transducer at a time                           │
   │  • Measure phase at reference microphone                     │
   │  • Compute per-transducer phase offset correction            │
   │  • Tolerance: <28° offset (manufacturing variance)           │
-  ├─────────────────────────────────────────────────────────────┤
+  ├──────────────────────────────────────────────────────────────┤
   │  STEP 2: VCSEL Beam Alignment                                │
   │  • Fire each VCSEL at minimum power                          │
   │  • Camera measures beam spot position                        │
   │  • Compute galvo correction table                            │
   │  • Tolerance: <100μm displacement (cloud is 200μm)           │
-  ├─────────────────────────────────────────────────────────────┤
-  │  STEP 3: VCSEL ↔ Ultrasound Alignment (CRITICAL)            │
+  ├──────────────────────────────────────────────────────────────┤
+  │  STEP 3: VCSEL ↔ Ultrasound Alignment (CRITICAL)             │
   │  • Create single trap node at center                         │
   │  • Fire VCSEL series, measure emission with photodetector    │
   │  • Scan VCSEL aim in grid around center                      │
   │  • Find peak emission = true alignment point                 │
   │  • If laser doesn't hit the trapped cloud → no light         │
-  ├─────────────────────────────────────────────────────────────┤
+  ├──────────────────────────────────────────────────────────────┤
   │  STEP 4: RGB Laser                                           │
   │  • Verify galvo tracks VCSEL scan pattern                    │
   │  • Measure color gamut at reference voxel                    │
-  └─────────────────────────────────────────────────────────────┘
+  └──────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -603,38 +603,38 @@ as I² (intensity squared) because it requires absorbing TWO photons.
 ```
   PARALLEL FIRING (all 8 at once):
   ┌──────────────────────────────────────────────────────────┐
-  │                                                            │
-  │  8 beams arrive simultaneously at the UCNP cloud           │
-  │  Total energy P spreads across the cloud volume            │
-  │  Each particle sees P/N photons (N = particles)            │
-  │                                                            │
-  │  Upconversion ∝ I² = (P/N)² per particle                  │
-  │  Total emission = N × (P/N)² = P²/N                       │
-  │                                                            │
-  │  MORE particles = LESS emission per particle               │
-  │  Energy is wasted heating the cloud uniformly              │
+  │                                                          │
+  │  8 beams arrive simultaneously at the UCNP cloud         │
+  │  Total energy P spreads across the cloud volume          │
+  │  Each particle sees P/N photons (N = particles)          │
+  │                                                          │
+  │  Upconversion ∝ I² = (P/N)² per particle                 │
+  │  Total emission = N × (P/N)² = P²/N                      │
+  │                                                          │
+  │  MORE particles = LESS emission per particle             │
+  │  Energy is wasted heating the cloud uniformly            │
   └──────────────────────────────────────────────────────────┘
 
   SERIES FIRING (sequential, 100ns apart):
   ┌──────────────────────────────────────────────────────────┐
-  │                                                            │
+  │                                                          │
   │  Pulse 1 (B0): hits cloud, excites Yb³⁺ to ²F₅/₂         │
-  │    └─ Yb³⁺ excited state lifetime: ~1ms                   │
-  │    └─ Energy STORED in metastable state                    │
-  │                                                            │
-  │  Pulse 2 (T0): hits SAME atoms 125ns later                │
-  │    └─ Adds MORE energy to already-excited Yb³⁺            │
-  │    └─ Some energy transfers to Er³⁺ (first step up)       │
-  │                                                            │
-  │  Pulse 3-8: keep stacking...                               │
-  │    └─ After 8 hits in 1μs, accumulated energy =            │
-  │       enough for TWO-PHOTON upconversion threshold         │
-  │                                                            │
-  │  Effective intensity: (8×P_single)²  = 64 × P_single²     │
-  │                                                            │
-  │  vs parallel:          P²/8                                │
-  │                                                            │
-  │  Series is 64×8 = 512× MORE EFFICIENT                     │
+  │    └─ Yb³⁺ excited state lifetime: ~1ms                  │
+  │    └─ Energy STORED in metastable state                  │
+  │                                                          │
+  │  Pulse 2 (T0): hits SAME atoms 125ns later               │
+  │    └─ Adds MORE energy to already-excited Yb³⁺           │
+  │    └─ Some energy transfers to Er³⁺ (first step up)      │
+  │                                                          │
+  │  Pulse 3-8: keep stacking...                             │
+  │    └─ After 8 hits in 1μs, accumulated energy =          │
+  │       enough for TWO-PHOTON upconversion threshold       │
+  │                                                          │
+  │  Effective intensity: (8×P_single)²  = 64 × P_single²    │
+  │                                                          │
+  │  vs parallel:          P²/8                              │
+  │                                                          │
+  │  Series is 64×8 = 512× MORE EFFICIENT                    │
   └──────────────────────────────────────────────────────────┘
 ```
 
@@ -689,19 +689,19 @@ Most display technologies fight ambient light. UCNPs benefit from it.
     already-excited ions over the emission threshold
 
   ┌─────────────────────────────────────────────────────┐
-  │  DARK ROOM:                                          │
+  │  DARK ROOM:                                         │
   │    Yb³⁺ ground state ──[VCSEL×8]──▶ emission        │
-  │    VCSELs do 100% of the work                        │
+  │    VCSELs do 100% of the work                       │
   │    Power needed: 12μJ × 8 = 96μJ per voxel          │
-  │                                                       │
-  │  INDOOR DAYLIGHT:                                     │
-  │    Yb³⁺ ground state ──[ambient IR]──▶ 40% excited   │
-  │    Yb³⁺ 40% excited ──[VCSEL×8]──▶ emission          │
-  │    VCSELs do 60% of the work (40% FREE from sun)     │
-  │    Power needed: 7μJ × 8 = 56μJ per voxel            │
-  │                                                       │
-  │  NET EFFECT: daylight makes the hologram              │
-  │  MORE power-efficient, not less visible               │
+  │                                                     │
+  │  INDOOR DAYLIGHT:                                   │
+  │    Yb³⁺ ground state ──[ambient IR]──▶ 40% excited  │
+  │    Yb³⁺ 40% excited ──[VCSEL×8]──▶ emission         │
+  │    VCSELs do 60% of the work (40% FREE from sun)    │
+  │    Power needed: 7μJ × 8 = 56μJ per voxel           │
+  │                                                     │
+  │  NET EFFECT: daylight makes the hologram            │
+  │  MORE power-efficient, not less visible             │
   └─────────────────────────────────────────────────────┘
 ```
 
@@ -718,31 +718,31 @@ the physics, not that it looks bright outdoors.
   HAND ENTERS DISPLAY VOLUME
 
   ┌──────────────────────────────────────────────────────────┐
-  │                                                            │
-  │  1. DETECT: Ultrasound echo detects hand position          │
-  │     • Subset of transducers switch to receive mode         │
-  │     • Time-of-flight → 3D position (~2mm accuracy)         │
-  │     • Update rate: ~100Hz                                  │
-  │                                                            │
-  │  2. OCCLUDE: Voxels behind hand are hidden                 │
-  │     • UCNPs near hand are displaced by air pressure         │
-  │     • Natural parallax — looks like a real object           │
-  │     • No rendering trick needed, physics does it            │
-  │                                                            │
-  │  3. REFORM: Image rebuilds around hand in ~5ms             │
-  │     • Ultrasound recalculates trap pattern                 │
-  │     • Particles re-trapped at new positions                │
-  │     • Limited by speed of sound (343 m/s)                  │
-  │                                                            │
-  │  4. HAPTIC: Feel the hologram                              │
-  │     • Same ultrasound array focuses pressure on skin       │
-  │     • 40kHz modulated to tactile range (200Hz)             │
-  │     • Sensation: buzzing, clicking, texture                │
-  │     • Focal spot: 8mm on skin                              │
-  │     • Max force: 1.6mN (gentle but perceptible)            │
-  │                                                            │
-  │  UCNPs are non-toxic (inert NaYF4 ceramic).                │
-  │  They wash off with water. No health concern.              │
+  │                                                          │
+  │  1. DETECT: Ultrasound echo detects hand position        │
+  │     • Subset of transducers switch to receive mode       │
+  │     • Time-of-flight → 3D position (~2mm accuracy)       │
+  │     • Update rate: ~100Hz                                │
+  │                                                          │
+  │  2. OCCLUDE: Voxels behind hand are hidden               │
+  │     • UCNPs near hand are displaced by air pressure      │
+  │     • Natural parallax — looks like a real object        │
+  │     • No rendering trick needed, physics does it         │
+  │                                                          │
+  │  3. REFORM: Image rebuilds around hand in ~5ms           │
+  │     • Ultrasound recalculates trap pattern               │
+  │     • Particles re-trapped at new positions              │
+  │     • Limited by speed of sound (343 m/s)                │
+  │                                                          │
+  │  4. HAPTIC: Feel the hologram                            │
+  │     • Same ultrasound array focuses pressure on skin     │
+  │     • 40kHz modulated to tactile range (200Hz)           │
+  │     • Sensation: buzzing, clicking, texture              │
+  │     • Focal spot: 8mm on skin                            │
+  │     • Max force: 1.6mN (gentle but perceptible)          │
+  │                                                          │
+  │  UCNPs are non-toxic (inert NaYF4 ceramic).              │
+  │  They wash off with water. No health concern.            │
   └──────────────────────────────────────────────────────────┘
 ```
 
@@ -753,37 +753,37 @@ the physics, not that it looks bright outdoors.
 We don't inflate specs. Here's what this system actually delivers.
 
 ```
-  ┌──────────────────────┬──────────────────────────────────────┐
-  │ Metric                │ Value                                 │
-  ├──────────────────────┼──────────────────────────────────────┤
-  │ Display volume        │ 12cm diameter sphere                  │
-  │ Resolution            │ ~28 voxels across (4.29mm pitch)     │
-  │ Active voxels/frame   │ ~1000                                │
-  │ Frame rate             │ 30 fps                               │
-  │ Voxel size             │ ~200μm UCNP cloud                   │
-  │ Emission per voxel     │ ~100-150 nW (visible light)         │
-  │ Color gamut            │ ~45% sRGB                           │
-  │ Color range            │ Green, yellow, orange, warm white   │
-  │ Touch latency          │ ~5ms (image reform)                 │
-  │ Haptic resolution      │ 8mm focal spot                      │
-  │ Total power            │ ~9W                                 │
-  │ UCNP refill interval   │ ~10,000 hours                      │
-  │ UCNP refill cost       │ ~$0.00005                          │
-  │ Prototype cost         │ ~$750                               │
-  ├──────────────────────┼──────────────────────────────────────┤
-  │ VISIBILITY             │                                      │
-  │  Dark room             │ Vivid, excellent                    │
-  │  Night outdoor          │ Clearly visible                    │
-  │  Indoor daylight        │ Soft glow, visible but not vivid   │
-  │  Direct sunlight        │ Too dim (not usable)               │
-  ├──────────────────────┼──────────────────────────────────────┤
-  │ LIMITATIONS            │                                      │
-  │  Resolution            │ Low — shapes yes, text no           │
-  │  Color                 │ Limited — no deep blue or magenta   │
-  │  Outdoor               │ Not viable in direct sun            │
-  │  Particle drift        │ 0.1%/hr loss from traps            │
-  │  Scan rate             │ ~30k voxels/sec (galvo limited)    │
-  └──────────────────────┴──────────────────────────────────────┘
+  ┌───────────────────────┬─────────────────────────────────────┐
+  │ Metric                │ Value                               │
+  ├───────────────────────┼─────────────────────────────────────┤
+  │ Display volume        │ 12cm diameter sphere                │
+  │ Resolution            │ ~28 voxels across (4.29mm pitch)    │
+  │ Active voxels/frame   │ ~1000                               │
+  │ Frame rate            │ 30 fps                              │
+  │ Voxel size            │ ~200μm UCNP cloud                   │ 
+  │ Emission per voxel    │ ~100-150 nW (visible light)         │ 
+  │ Color gamut           │ ~45% sRGB                           │ 
+  │ Color range           │ Green, yellow, orange, warm white   │ 
+  │ Touch latency         │ ~5ms (image reform)                 │ 
+  │ Haptic resolution     │ 8mm focal spot                      │
+  │ Total power           │ ~9W                                 │
+  │ UCNP refill interval  │ ~10,000 hours                       │ 
+  │ UCNP refill cost      │ ~$0.00005                           │ 
+  │ Prototype cost        │ ~$750                               │
+  ├───────────────────────┼─────────────────────────────────────┤
+  │ VISIBILITY            │                                     │
+  │  Dark room            │ Vivid, excellent                    │
+  │  Night outdoor        │ Clearly visible                     │
+  │  Indoor daylight      │ Soft glow, visible but not vivid    │
+  │  Direct sunlight      │ Too dim (not usable)                │
+  ├───────────────────────┼─────────────────────────────────────┤
+  │ LIMITATIONS           │                                     │
+  │  Resolution           │ Low — shapes yes, text no           │
+  │  Color                │ Limited — no deep blue or magenta   │
+  │  Outdoor              │ Not viable in direct sun            │
+  │  Particle drift       │ 0.1%/hr loss from traps             │
+  │  Scan rate            │ ~30k voxels/sec (galvo limited)     │
+  └───────────────────────┴─────────────────────────────────────┘
 ```
 
 ---
